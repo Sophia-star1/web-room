@@ -35,11 +35,22 @@
   <canvas id="canvas"></canvas>
   <div id="face">
     <div>
-      <!-- <img
+      <p
+        style="
+          float: left;
+          width: 200px;
+          margin-left: 300px;
+          color: #fff;
+          font-size: 25px;
+        "
+      >
+        已开门
+      </p>
+      <img
         src="@/assets/x.png"
         style="float: right; width: 40px; height: 40px"
         @click="closeface()"
-      /> -->
+      />
     </div>
     <video
       autoplay="autoplay"
@@ -47,25 +58,11 @@
       style="width: 500px; height: 400px; margin-left: 90px; margin-top: 20px"
     ></video>
   </div>
-  <div @click="openTest" class="buttontest">TTTTTTT</div>
 </template>
 <script setup>
-import { ElNotification } from "element-plus";
 import TimeLine from "./components/timeLine.vue";
 import NowTime from "./components/date.vue";
 import { ref } from "vue";
-import { face } from "@/api/request";
-import { openDoor } from "@/utils/face";
-import { opendoor } from "@/api/request";
-
-const openTest = () => {
-  ElNotification({
-    title: "Success",
-    message: "This is a success message",
-    type: "success",
-  });
-};
-
 const room = ref({
   roomId: 102,
   name: "102会议室",
@@ -96,29 +93,13 @@ function closeface() {
   video.srcObject.getTracks()[0].stop();
   face.style.display = "none";
 }
-
-const takephoto = async () => {
+function takephoto() {
   let video = document.getElementById("video");
   let canva = document.getElementById("canvas");
   let context = canva.getContext("2d");
   context.drawImage(video, 0, 0, 500, 400);
-  let img = canva.toDataURL("image/png").slice(22);
-  let { data } = await face();
-  if (openDoor(data.result.user_list)) {
-    ElNotification({
-      title: "Success",
-      message: "开门",
-      type: "success",
-    });
-    await opendoor();
-  } else {
-    ElNotification({
-      title: "Warning",
-      message: "没有权限",
-      type: "warning",
-    });
-  }
-};
+  let i = canva.toDataURL("image/png");
+}
 </script>
 
 <style lang="scss" scoped>
